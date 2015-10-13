@@ -15,7 +15,7 @@ import java.util.Locale;
 public class ThreadExample extends Activity {
 
     int numThreads;
-    TextView threadCounter, myTextView;
+    TextView threadCounterView, myTextView;
     Handler mHandler;
 
     //TODO: define mHandler as an anonymous class and override handleMessage to use msg data to update the UI
@@ -25,7 +25,7 @@ public class ThreadExample extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thread_example);
-        threadCounter = (TextView) findViewById(R.id.threadCount);
+        threadCounterView = (TextView) findViewById(R.id.threadCount);
         myTextView = (TextView) findViewById(R.id.myTextView);
     }
 
@@ -55,7 +55,7 @@ public class ThreadExample extends Activity {
         timeLapse.start();
 
         myTextView.setText("This might take a moment...");
-        threadCounter.setText("Thread Count: " + String.valueOf(numThreads));
+        threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
 
 
     }
