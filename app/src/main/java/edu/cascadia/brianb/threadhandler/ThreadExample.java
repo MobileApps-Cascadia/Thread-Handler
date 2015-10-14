@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 /* Code example based on http://www.techotopia.com/index.php/A_Basic_Overview_of_Android_Threads_and_Thread_handlers
  */
 public class ThreadExample extends Activity {
@@ -27,12 +29,30 @@ public class ThreadExample extends Activity {
         setContentView(R.layout.activity_thread_example);
         threadCounterView = (TextView) findViewById(R.id.threadCount);
         myTextView = (TextView) findViewById(R.id.myTextView);
+
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String text = msg.getData().getString("myKey");
+
+                myTextView.setText(text);
+
+                threadCounterView.setText("Thread Count: " + decrementThreadCount());
+            }
+        };
     }
 
-    public void buttonClick(View view)
-    {
+    private synchronized int incrementThreadCount() {
+        return ++numThreads;
+    }
+
+    private synchronized int decrementThreadCount() {
+        return --numThreads;
+    }
+
+    public void buttonClick(View view) {
         //Create a new thread to do the time consuming operation
-        Thread timeLapse = new Thread( new Runnable() {
+        Thread timeLapse = new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -55,21 +75,25 @@ public class ThreadExample extends Activity {
         timeLapse.start();
 
         myTextView.setText("This might take a moment...");
-        threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
-
-
+        threadCounterView.setText("Thread Count: " + incrementThreadCount());
     }
 
     // Mimic time delay in a network activity
-    public void takeSomeTime(int seconds){
-        long endTime = System.currentTimeMillis() + seconds*1000;
+    public void takeSomeTime(int seconds) {
+        long endTime = System.currentTimeMillis() + seconds * 1000;
 
         while (System.currentTimeMillis() < endTime) {
             synchronized (this) {
                 try {
+                    System.out.println(">>>Setting wait for thread #" + numThreads);
                     wait(endTime - System.currentTimeMillis());
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
         }
+        System.out.println(">>>takeSomeTime completed for thread #" + numThreads);
+
     }
 }
+
+
