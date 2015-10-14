@@ -23,6 +23,27 @@ public class ThreadExample extends Activity {
     //TODO: define mHandler as an anonymous class and override handleMessage to use msg data to update the UI
     //TODO: increment and decrement numThreads counter
 
+    private static class MyHandler extends Handler {
+        private final WeakReference<ThreadExample> mActivity;
+
+        public MyHandler(ThreadExample activity) {
+            super();
+            mActivity = new WeakReference<ThreadExample>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            String text = msg.getData().getString("myKey");
+            ThreadExample activity = mActivity.get();
+
+            activity.updateTextView(text);
+
+            activity.updateThreadCountTextView();
+
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +51,7 @@ public class ThreadExample extends Activity {
         threadCounterView = (TextView) findViewById(R.id.threadCount);
         myTextView = (TextView) findViewById(R.id.myTextView);
 
-        mHandler = new Handler() {
+        /*mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 String text = msg.getData().getString("myKey");
@@ -39,7 +60,8 @@ public class ThreadExample extends Activity {
 
                 threadCounterView.setText("Thread Count: " + decrementThreadCount());
             }
-        };
+        };*/
+        mHandler = new MyHandler(this);
     }
 
     // increment numTheards thread-safe
@@ -63,6 +85,10 @@ public class ThreadExample extends Activity {
 
                 //Send a message to the UI Thread through a Handler
                 if (mHandler != null) {
+                    // need to decrement the thread count separately for
+                    // MyHandler class.
+                    decrementThreadCount();
+
                     Message msg = mHandler.obtainMessage();
                     Bundle bundle = new Bundle();
                     SimpleDateFormat dateformat =
@@ -95,6 +121,14 @@ public class ThreadExample extends Activity {
         }
         System.out.println(">>>takeSomeTime completed for thread #" + numThreads);
 
+    }
+
+    public void updateTextView(String text) {
+        myTextView.setText(text);
+    }
+
+    public void updateThreadCountTextView() {
+        threadCounterView.setText("Thread Count: " + numThreads);
     }
 }
 
