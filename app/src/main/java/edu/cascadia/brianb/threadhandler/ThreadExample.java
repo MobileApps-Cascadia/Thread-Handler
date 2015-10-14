@@ -42,10 +42,12 @@ public class ThreadExample extends Activity {
         };
     }
 
+    // increment numTheards thread-safe
     private synchronized int incrementThreadCount() {
         return ++numThreads;
     }
 
+    // decrement numTheards thread-safe
     private synchronized int decrementThreadCount() {
         return --numThreads;
     }
