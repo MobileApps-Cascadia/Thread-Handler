@@ -37,6 +37,7 @@ public class ThreadExample extends Activity {
             public void run() {
 
                 //This is where the time goes while the thread is running
+                ++numThreads;
                 takeSomeTime(5);
 
                 //Send a message to the UI Thread through a Handler
@@ -56,8 +57,15 @@ public class ThreadExample extends Activity {
 
         myTextView.setText("This might take a moment...");
         threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
+        --numThreads;
 
+    }
 
+    mHandler = new Handler(){
+        @Override
+        public void handleMessage(){
+            //None of my previous ideas seemed to work
+        }
     }
 
     // Mimic time delay in a network activity
