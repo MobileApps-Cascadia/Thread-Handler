@@ -16,7 +16,18 @@ public class ThreadExample extends Activity {
 
     int numThreads;
     TextView threadCounterView, myTextView;
-    Handler mHandler;
+    //Handler mHandler;
+
+    // Display date and counter from thread on UI
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage (Message msg)   {
+           myTextView.setText(msg.getData().getString("myKey"));
+           numThreads--;
+           threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
+        }
+    };
+
 
     //TODO: define mHandler as an anonymous class and override handleMessage to use msg data to update the UI
     //TODO: increment and decrement numThreads counter
@@ -33,11 +44,12 @@ public class ThreadExample extends Activity {
     {
         //Create a new thread to do the time consuming operation
         Thread timeLapse = new Thread( new Runnable() {
+
             @Override
             public void run() {
 
                 //This is where the time goes while the thread is running
-                takeSomeTime(5);
+                takeSomeTime(3);
 
                 //Send a message to the UI Thread through a Handler
                 if (mHandler != null) {
@@ -49,15 +61,15 @@ public class ThreadExample extends Activity {
                     bundle.putString("myKey", "It's now: " + dateString);
                     msg.setData(bundle);
                     mHandler.sendMessage(msg);
+
                 }
             }
         });
         timeLapse.start();
+        numThreads++;
 
         myTextView.setText("This might take a moment...");
         threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
-
-
     }
 
     // Mimic time delay in a network activity
