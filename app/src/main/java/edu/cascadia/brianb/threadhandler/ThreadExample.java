@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -16,10 +17,27 @@ public class ThreadExample extends Activity {
 
     int numThreads;
     TextView threadCounterView, myTextView;
-    Handler mHandler;
 
-    //TODO: define mHandler as an anonymous class and override handleMessage to use msg data to update the UI
-    //TODO: increment and decrement numThreads counter
+    private static class MyHandler extends Handler {
+        private final WeakReference<ThreadExample> mActivity;
+
+        public MyHandler(ThreadExample ta) {
+            mActivity = new WeakReference<ThreadExample>(ta);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            ThreadExample ta = mActivity.get();
+            if (ta != null) {
+                ((TextView) ta.findViewById(R.id.myTextView))
+                        .setText(msg.getData().getString("myKey"));
+                ta.addThreadCount(-1);
+            }
+        }
+    }
+
+    MyHandler mHandler = new MyHandler(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +47,14 @@ public class ThreadExample extends Activity {
         myTextView = (TextView) findViewById(R.id.myTextView);
     }
 
-    public void buttonClick(View view)
-    {
+    public void buttonClick(View view) {
         //Create a new thread to do the time consuming operation
         Thread timeLapse = new Thread( new Runnable() {
             @Override
             public void run() {
 
                 //This is where the time goes while the thread is running
-                takeSomeTime(5);
+                takeSomeTime(1);
 
                 //Send a message to the UI Thread through a Handler
                 if (mHandler != null) {
@@ -53,11 +70,14 @@ public class ThreadExample extends Activity {
             }
         });
         timeLapse.start();
+        addThreadCount(1);
 
         myTextView.setText("This might take a moment...");
+    }
+
+    void addThreadCount(int add) {
+        numThreads += add;
         threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
-
-
     }
 
     // Mimic time delay in a network activity
