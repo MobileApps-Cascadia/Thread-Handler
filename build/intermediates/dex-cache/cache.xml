@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="/Users/brianb/Courses/BIT 272/Exercises on Github/Thread-handler/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jar="C:\Users\pknayyar\Documents\GitHub\New_All\thread-handler\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
-        <dex dex="/Users/brianb/Courses/BIT 272/Exercises on Github/Thread-handler/app/build/intermediates/pre-dexed/debug/classes-2e216800908ed3e8c6f2957783676361717fc0ce.jar" />
+        <dex dex="C:\Users\pknayyar\Documents\GitHub\New_All\thread-handler\app\build\intermediates\pre-dexed\debug\classes-3b366a7e9b646c57bc2df463ac295ae3e687409f.jar" />
     </item>
     <item
-        jar="/Users/brianb/Courses/BIT 272/Exercises on Github/Thread-handler/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
+        jar="C:\Users\pknayyar\Documents\GitHub\New_All\thread-handler\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="/Users/brianb/Courses/BIT 272/Exercises on Github/Thread-handler/app/build/intermediates/pre-dexed/debug/classes-fbf00f4ec3e37ac1f115f8be2b4a50c4ed621892.jar" />
+        <dex dex="C:\Users\pknayyar\Documents\GitHub\New_All\thread-handler\app\build\intermediates\pre-dexed\debug\classes-e50fc5bd504e2769fadf46d22aec6ae6da2acb5d.jar" />
     </item>
     <item
-        jar="/Users/brianb/Courses/BIT 272/Exercises on Github/Thread-handler/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
+        jar="C:\Users\pknayyar\Documents\GitHub\New_All\thread-handler\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="/Users/brianb/Courses/BIT 272/Exercises on Github/Thread-handler/app/build/intermediates/pre-dexed/debug/internal_impl-23.0.1-2aa4a5b1e2f689244911be72f09e46bcf4a38198.jar" />
+        <dex dex="C:\Users\pknayyar\Documents\GitHub\New_All\thread-handler\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-e93ce31e6ddf17cc6721a3884a2bf58da9da71cb.jar" />
     </item>
     <item
-        jar="/Users/brianb/Code/Android/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jar="C:\Users\pknayyar\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="/Users/brianb/Courses/BIT 272/Exercises on Github/Thread-handler/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1-436c7fc6e4ccc0b08944ed5c7d14d7972d0177a9.jar" />
+        <dex dex="C:\Users\pknayyar\Documents\GitHub\New_All\thread-handler\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-2193c71f7d9dfde12116e9f53cc323a511a8724c.jar" />
     </item>
 
 </items>
