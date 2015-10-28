@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Thread-handler.iml" filepath="$PROJECT_DIR$/Thread-handler.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/thread-handler.iml" filepath="$PROJECT_DIR$/thread-handler.iml" />
     </modules>
   </component>
 </project>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -27,10 +28,26 @@ public class ThreadExample extends Activity {
         setContentView(R.layout.activity_thread_example);
         threadCounterView = (TextView) findViewById(R.id.threadCount);
         myTextView = (TextView) findViewById(R.id.myTextView);
+        numThreads = 1; // 1 for the main activity thread
+        mHandler = new UIHandler(this);
+        // anonymous class
+        /* mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg != null) {
+                    Bundle bundle = msg.getData();
+                    String date = bundle.getString("myKey");
+                    myTextView.setText(date);
+                    threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
+                }
+            }
+        }; */
     }
 
     public void buttonClick(View view)
     {
+        ++numThreads;
+
         //Create a new thread to do the time consuming operation
         Thread timeLapse = new Thread( new Runnable() {
             @Override
@@ -49,6 +66,7 @@ public class ThreadExample extends Activity {
                     bundle.putString("myKey", "It's now: " + dateString);
                     msg.setData(bundle);
                     mHandler.sendMessage(msg);
+                    --numThreads;
                 }
             }
         });
@@ -69,6 +87,27 @@ public class ThreadExample extends Activity {
                 try {
                     wait(endTime - System.currentTimeMillis());
                 } catch (Exception e) {}
+            }
+        }
+    }
+
+    // static inner handler class to avoid memory leaks
+    private static class UIHandler extends Handler {
+
+        private final WeakReference<ThreadExample> mAct;
+
+        private UIHandler(ThreadExample activity) {
+            mAct = new WeakReference<ThreadExample>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg != null) {
+                ThreadExample activity = mAct.get();
+                Bundle bundle = msg.getData();
+                String date = bundle.getString("myKey");
+                activity.myTextView.setText(date);
+                activity.threadCounterView.setText("Thread Count: " + String.valueOf(activity.numThreads));
             }
         }
     }
