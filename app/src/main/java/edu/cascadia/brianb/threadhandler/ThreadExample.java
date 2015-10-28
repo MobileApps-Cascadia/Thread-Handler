@@ -21,13 +21,27 @@ public class ThreadExample extends Activity {
     //TODO: define mHandler as an anonymous class and override handleMessage to use msg data to update the UI
     //TODO: increment and decrement numThreads counter
 
-    @Override
+@Override
     protected void onCreate(Bundle savedInstanceState) {
+        numThreads = 0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thread_example);
         threadCounterView = (TextView) findViewById(R.id.threadCount);
         myTextView = (TextView) findViewById(R.id.myTextView);
+
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                //now can access the msg
+
+                String time = msg.getData().getString("myKey");
+                myTextView.setText(time);
+                System.out.println("***numThreads " + numThreads);
+                threadCounterView.setText("Thread Count: " + String.valueOf(--numThreads));
+            }
+        };
     }
+
 
     public void buttonClick(View view)
     {
@@ -55,7 +69,7 @@ public class ThreadExample extends Activity {
         timeLapse.start();
 
         myTextView.setText("This might take a moment...");
-        threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
+        threadCounterView.setText("Thread Count: " + String.valueOf(numThreads++));
 
 
     }
