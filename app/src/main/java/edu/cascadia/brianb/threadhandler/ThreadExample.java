@@ -17,11 +17,16 @@ public class ThreadExample extends Activity {
     int numThreads;
     TextView threadCounterView, myTextView;
     //TODO define mHandler as an anonymous inner class
-    Handler mHandler;
-        //TODO override handleMessage to update the UI
-        //TODO use the Message pased from the thread to update the UI
-        //TODO increment and decrement numThreads counter display
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            Bundle bundle = message.getData();
 
+            myTextView.setText(bundle.getString("myKey"));
+            threadCounterView.setText("Thread Count: " + String.valueOf(--numThreads));
+        }
+
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +41,7 @@ public class ThreadExample extends Activity {
         Thread timeLapse = new Thread( new Runnable() {
             @Override
             public void run() {
-                myTextView.setText("Starting Thread"); //violates android's second rule for thread handling
+                //myTextView.setText("Starting Thread"); //violates android's second rule for thread handling
 
                 //This is where the time goes while the thread is running
                 takeSomeTime(5);
@@ -55,11 +60,10 @@ public class ThreadExample extends Activity {
             }
         });
         timeLapse.start();
+        numThreads++;
 
         myTextView.setText("This might take a moment...");
         threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
-
-
     }
 
     // Mimic time delay in a network activity
