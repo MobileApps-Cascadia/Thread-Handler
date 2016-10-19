@@ -35,6 +35,7 @@ public class ThreadExample extends Activity {
         Thread timeLapse = new Thread( new Runnable() {
             @Override
             public void run() {
+                myTextView.setText("Starting Thread"); //violates android's second rule for thread handling
 
                 //This is where the time goes while the thread is running
                 takeSomeTime(5);
