@@ -16,10 +16,10 @@ public class ThreadExample extends Activity {
 
     int numThreads;
     TextView threadCounterView, myTextView;
+    //TODO define mHandler as an anonymous inner class
     Handler mHandler;
-
-    //TODO: define mHandler as an anonymous class and override handleMessage to use msg data to update the UI
-    //TODO: increment and decrement numThreads counter
+        // TODO override handleMessage to use msg data to update the UI
+        //TODO increment and decrement numThreads counter display
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class ThreadExample extends Activity {
             synchronized (this) {
                 try {
                     wait(endTime - System.currentTimeMillis());
-                } catch (Exception e) {}
+                } catch (Exception e) { e.printStackTrace();}
             }
         }
     }
