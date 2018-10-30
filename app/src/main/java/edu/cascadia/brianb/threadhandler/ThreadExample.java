@@ -16,10 +16,10 @@ public class ThreadExample extends Activity {
 
     int numThreads;
     TextView threadCounterView, myTextView;
-    //TODO define mHandler as an anonymous inner class
+    //TODO define mHandler as an anonymous, custom inner class that extends Handler
     Handler mHandler;
         //TODO override handleMessage to update the UI
-        //TODO use the Message pased from the thread to update the UI
+        //TODO use the Message passed from the thread to update the UI
         //TODO increment and decrement numThreads counter display
 
     @Override
@@ -36,7 +36,9 @@ public class ThreadExample extends Activity {
         Thread timeLapse = new Thread( new Runnable() {
             @Override
             public void run() {
-                myTextView.setText("Starting Thread"); //violates android's second rule for thread handling
+
+                //TODO: remove this as it breaks android's second rule for thread handling
+                myTextView.setText("Starting Thread");
 
                 //This is where the time goes while the thread is running
                 takeSomeTime(5);
