@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -21,14 +23,31 @@ public class ThreadExample extends Activity {
     //Define mHandler as an anonymous, custom inner class that extends Handler
     Handler mHandler = new Handler(){
         //TODO @Override the handleMessage function to update the UI
-        {
+
+           @Override
+            public void handleMessage(Message msg){
+
+               TextView counter = (TextView)findViewById(R.id.threadCount);
+               TextView myTextView = (TextView)findViewById(R.id.myTextView);
+
+                   if(msg.what == START_THREAD){
+                       numThreads++;
+                   }
+                   else if (msg.what == END_THREAD){
+                       numThreads--;
+                   }
+                   myTextView.setText(String.valueOf(msg.getData().getString("myKey")));
+                   counter.setText("Thread Count: " + String.valueOf(numThreads));
+        }
+
             //TODO test if message.what equals START_THREAD
                 // increment numThreads counter
             //TODO else if the message.what equals END_THREAD,
                 //decrement numThreads counter
                 //use setText to update the myTextView to the string passed in the message
             //TODO use setText to update the threadCounterView display
-        }
+
+
         @Override
         public int hashCode() {
             return super.hashCode();
@@ -52,7 +71,10 @@ public class ThreadExample extends Activity {
             //Note that this block is executing on a separate thread
                 //TODO: remove this setText method
                 //    it breaks the rule for thread handling, "Only update UIViews from UI thread"
-                myTextView.setText("Starting Thread");
+
+                // myTextView.setText("Starting Thread");
+
+
 
                 //This is where the time goes while the thread is running
                 takeSomeTime(5);
@@ -61,22 +83,24 @@ public class ThreadExample extends Activity {
                 if (mHandler != null) {
                     Message msg = mHandler.obtainMessage();
                     Bundle bundle = new Bundle();
-                    SimpleDateFormat dateformat =
-                            new SimpleDateFormat("HH:mm:ss", Locale.US);
+                    SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm:ss", Locale.US);
                     String dateString = dateformat.format(new Date());
                     bundle.putString("myKey", "It's now: " + dateString);
                     msg.setData(bundle);
                     msg.what = END_THREAD;
                     mHandler.sendMessage(msg);
+
                 }
             }
         });
+
+
         mHandler.sendEmptyMessage(START_THREAD);
         timeLapse.start();
 
         //Notice that this is executed only on the UI Thread
-        myTextView.setText("This might take a moment...");
-        threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
+       // myTextView.setText("This might take a moment...");
+       // threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
     }
 
     // Helper method to mimic a time delay such as network activity
