@@ -13,14 +13,27 @@ import java.util.Locale;
 /* Code example based on http://www.techotopia.com/index.php/A_Basic_Overview_of_Android_Threads_and_Thread_handlers
  */
 public class ThreadExample extends Activity {
-
+    private static final int START_THREAD = 100;
+    private static final int END_THREAD   = 200;
     int numThreads;
     TextView threadCounterView, myTextView;
-    //TODO define mHandler as an anonymous inner class
-    Handler mHandler;
-        //TODO override handleMessage to update the UI
-        //TODO use the Message pased from the thread to update the UI
-        //TODO increment and decrement numThreads counter display
+    //define mHandler as an anonymous inner class
+
+
+    Handler mHandler = new Handler(){
+        @Override
+        public void  handleMessage(Message msg){
+            TextView myTextView =
+                    (TextView)findViewById(R.id.myTextView);
+            if(msg.what == START_THREAD) {
+                numThreads++;
+            }else if(msg.what == END_THREAD) {
+                numThreads--;
+                myTextView.setText(msg.getData().getString("myKey"));
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +49,7 @@ public class ThreadExample extends Activity {
         Thread timeLapse = new Thread( new Runnable() {
             @Override
             public void run() {
-                myTextView.setText("Starting Thread"); //violates android's second rule for thread handling
+                //myTextView.setText("Starting Thread"); //violates android's second rule for thread handling
 
                 //This is where the time goes while the thread is running
                 takeSomeTime(5);
@@ -50,12 +63,14 @@ public class ThreadExample extends Activity {
                     String dateString = dateformat.format(new Date());
                     bundle.putString("myKey", "It's now: " + dateString);
                     msg.setData(bundle);
+                    msg.what = END_THREAD;
                     mHandler.sendMessage(msg);
                 }
+
             }
         });
         timeLapse.start();
-
+        mHandler.sendEmptyMessage(START_THREAD);
         myTextView.setText("This might take a moment...");
         threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
 
