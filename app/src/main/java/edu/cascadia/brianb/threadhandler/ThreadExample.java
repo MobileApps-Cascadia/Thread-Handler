@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -21,13 +23,26 @@ public class ThreadExample extends Activity {
     //Define mHandler as an anonymous, custom inner class that extends Handler
     Handler mHandler = new Handler(){
         //TODO @Override the handleMessage function to update the UI
+        @Override
+                public void handleMessage(Message msg)
         {
+            myTextView = (TextView) findViewById(R.id.myTextView);
+            threadCounterView = (TextView) findViewById(R.id.threadCount);
+
             //TODO test if message.what equals START_THREAD
-                // increment numThreads counter
+            if (msg.what == START_THREAD) {
+                numThreads++;
+            }
             //TODO else if the message.what equals END_THREAD,
+            else if (msg.what == END_THREAD) {
                 //decrement numThreads counter
                 //use setText to update the myTextView to the string passed in the message
+                numThreads--;
+            }
             //TODO use setText to update the threadCounterView display
+            threadCounterView.setText("Thread Count: " + numThreads);
+
+            myTextView.setText(msg.getData().getString("myKey"));
         }
         @Override
         public int hashCode() {
