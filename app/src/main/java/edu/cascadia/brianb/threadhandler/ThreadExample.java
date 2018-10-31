@@ -19,16 +19,22 @@ public class ThreadExample extends Activity {
     TextView threadCounterView, myTextView;
 
     //Define mHandler as an anonymous, custom inner class that extends Handler
-    Handler mHandler = new Handler(){
-        //TODO @Override the handleMessage function to update the UI
-        {
-            //TODO test if message.what equals START_THREAD
-                // increment numThreads counter
-            //TODO else if the message.what equals END_THREAD,
-                //decrement numThreads counter
-                //use setText to update the myTextView to the string passed in the message
-            //TODO use setText to update the threadCounterView display
+    Handler mHandler = new  Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            threadCounterView = (TextView) findViewById(R.id.threadCount);
+            myTextView = (TextView) findViewById(R.id.myTextView);
+            if(msg.what == START_THREAD){
+                numThreads++;
+            }
+            else if(msg.what == END_THREAD){
+                numThreads--;
+            }
+            myTextView.setText(msg.getData().getString("myKey"));
+            threadCounterView.setText(numThreads+"");
         }
+
         @Override
         public int hashCode() {
             return super.hashCode();
@@ -50,9 +56,6 @@ public class ThreadExample extends Activity {
             @Override
             public void run() {
             //Note that this block is executing on a separate thread
-                //TODO: remove this setText method
-                //    it breaks the rule for thread handling, "Only update UIViews from UI thread"
-                myTextView.setText("Starting Thread");
 
                 //This is where the time goes while the thread is running
                 takeSomeTime(5);
