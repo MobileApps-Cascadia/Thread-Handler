@@ -13,11 +13,38 @@ import java.util.Locale;
 /* Code example based on http://www.techotopia.com/index.php/A_Basic_Overview_of_Android_Threads_and_Thread_handlers
  */
 public class ThreadExample extends Activity {
-
+    private static final int START_THREAD = 100;
+    private static final int END_THREAD = 200;
     int numThreads;
     TextView threadCounterView, myTextView;
     //TODO define mHandler as an anonymous inner class
-    Handler mHandler;
+
+   Handler mHandler = new Handler(){
+       @Override
+       public void handleMessage(Message msg){
+           //TODO test if message.what equals START_THREAD
+           // increment numThreads counter
+
+           //TODO else if the message.what equals END_THREAD,
+           //decrement numThreads counter
+
+           //use setText to update the myTextView to the string passed in the message
+//TODO use setText to update the threadCounterView display
+
+           TextView myTextView = (TextView) findViewById(R.id.myTextView);
+           myTextView.setText("Starting Thread");
+           Bundle b = msg.getData();
+           String s = b.getString("myKey");
+           myTextView.setText(s);
+           if(msg.what == START_THREAD){
+               numThreads++;
+           }
+           else if(msg.what == END_THREAD ){
+               numThreads--;
+           }
+       }
+    };
+
         //TODO override handleMessage to update the UI
         //TODO use the Message pased from the thread to update the UI
         //TODO increment and decrement numThreads counter display
@@ -28,6 +55,7 @@ public class ThreadExample extends Activity {
         setContentView(R.layout.activity_thread_example);
         threadCounterView = (TextView) findViewById(R.id.threadCount);
         myTextView = (TextView) findViewById(R.id.myTextView);
+
     }
 
     public void buttonClick(View view)
@@ -36,7 +64,8 @@ public class ThreadExample extends Activity {
         Thread timeLapse = new Thread( new Runnable() {
             @Override
             public void run() {
-                myTextView.setText("Starting Thread"); //violates android's second rule for thread handling
+                //    it breaks the rule for thread handling, "Only update UIViews from UI thread"
+              //  myTextView.setText("Starting Thread"); //violates android's second rule for thread handling
 
                 //This is where the time goes while the thread is running
                 takeSomeTime(5);
@@ -54,12 +83,11 @@ public class ThreadExample extends Activity {
                 }
             }
         });
+        mHandler.sendEmptyMessage(START_THREAD);
         timeLapse.start();
 
         myTextView.setText("This might take a moment...");
         threadCounterView.setText("Thread Count: " + String.valueOf(numThreads));
-
-
     }
 
     // Mimic time delay in a network activity
